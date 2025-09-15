@@ -1,26 +1,20 @@
 class Solution {
 public:
     int canBeTypedWords(string text, string brokenLetters) {
-        unordered_set<char> broken;
-        for (char c : brokenLetters) {
-            broken.insert(c);
-        }
-        
-        int ans = 0;
-        bool hasBroken = false;
-        
-        for (int i = 0; i < text.size(); i++) {
-            if (broken.count(text[i]) > 0) {
-                hasBroken = true;
-            }
-            if (text[i] == ' ' || i == text.size() - 1) {
-                if (!hasBroken) {
-                    ans++;
-                }
-                hasBroken = false;
+        vector<bool> broken(26, false);
+        for (char c : brokenLetters) broken[c - 'a'] = true;
+
+        int count = 0;
+        bool ok = true;
+
+        for (int i = 0; i <= text.size(); i++) {
+            if (i < text.size() && text[i] != ' ') {
+                if (broken[text[i] - 'a']) ok = false;
+            } else {
+                if (ok) count++;
+                ok = true;
             }
         }
-        
-        return ans;
+        return count;
     }
 };
