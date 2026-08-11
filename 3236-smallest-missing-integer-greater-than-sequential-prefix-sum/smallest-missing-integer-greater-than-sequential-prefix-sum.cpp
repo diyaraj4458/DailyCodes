@@ -1,24 +1,27 @@
 class Solution {
 public:
     int missingInteger(vector<int>& nums) {
-        int sum = nums[0];
-
-        for (int i = 1; i < nums.size(); i++) {
-            if (nums[i] == nums[i - 1] + 1) {
-                sum += nums[i];
-            } else {
-                break;
-            }
+        int prefix=nums[0], i, n=nums.size();
+        if (n==1) return prefix+1;
+        for(i=1; i<n; i++){
+            if (nums[i]!=nums[i-1]+1)
+            break;
+            prefix+=nums[i];
         }
-
-        unordered_set<int> seen(nums.begin(), nums.end());
-
-        int answer = sum;
-
-        while (seen.count(answer)) {
-            answer++;
+        bitset<51> seen=0;
+        for (int j=0; j<n; j++){
+            seen[nums[j]]=1;
         }
-
-        return answer;
+        while(prefix<=50 && seen[prefix])
+            prefix++;
+        return prefix;
     }
 };
+
+auto init = []()
+{ 
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
